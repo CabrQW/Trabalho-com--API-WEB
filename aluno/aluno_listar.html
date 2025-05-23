@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Aluno(a)</title>
+  <link rel="stylesheet" href="aluno.css">
+</head>
+<body>
+  <header>
+    <a href="/inicio/index.html" class="voltar">Voltar</a>
+    <div class="menu-header">
+      <a href="aluno_criar.html">CRIAR ALUNO(A)</a>
+      <span class="ativo">LISTAR ALUNO(A)</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="lista-box">
+      <h2>Listagem dos Alunos:</h2>
+      <ul id="lista-alunos"></ul>
+    </div>
+  </main>
+
+  <!-- Modal  -->
+  <div id="modal-editar" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="fecharModal()">&times;</span>
+      <h3>Editar Aluno</h3>
+      <form id="form-editar">
+        <input type="text" id="edit-nome" placeholder="Nome"><br>
+        <input type="date" id="edit-nascimento"><br>
+        <input type="number" id="edit-turma" placeholder="Turma ID"><br>
+        <input type="number" id="edit-nota1" placeholder="Nota 1º semestre"><br>
+        <input type="number" id="edit-nota2" placeholder="Nota 2º semestre"><br>
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="aluno.js"></script>
+  <script>
+    let alunoEditandoId = null;
+
+    async function carregarLista() {
+      const alunos = await listarAlunos();
+      const lista = document.getElementById('lista-alunos');
+      lista.innerHTML = '';
+
+      alunos.forEach(aluno => {
+        const item = document.createElement('li');
+        item.innerHTML = `
+          ${aluno.nome}
+          <div class="butao1">
+          <button class="editar" onclick="abrirModal(${aluno.id})">Editar</button>
+          <button class="deletar" onclick="removerAluno(${aluno.id})">Deletar</button>
+          </div>
+        `;
+        lista.appendChild(item);
+      });
+    }
+
+    async function removerAluno(id) {
+      if (confirm('Tem certeza que deseja excluir este aluno?')) {
+        await deletarAluno(id);
+        carregarLista();
+      }
+    }
+
+    async function abrirModal(id) {
+      alunoEditandoId = id;
+      const aluno = await obterAluno(id);
+
+      document.getElementById('edit-nome').value = aluno.nome;
+      document.getElementById('edit-nascimento').value = aluno.data_nascimento;
+      document.getElementById('edit-turma').value = aluno.turma_id;
+      document.getElementById('edit-nota1').value = aluno.nota_primeiro_semestre;
+      document.getElementById('edit-nota2').value = aluno.nota_segundo_semestre;
+
+      document.getElementById('modal-editar').classList.remove('hidden');
+    }
+
+    function fecharModal() {
+      document.getElementById('modal-editar').classList.add('hidden');
+    }
+
+    document.getElementById('form-editar').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const dadosAtualizados = {
+        nome: document.getElementById('edit-nome').value,
+        data_nascimento: document.getElementById('edit-nascimento').value,
+        turma_id: parseInt(document.getElementById('edit-turma').value),
+        nota_primeiro_semestre: parseFloat(document.getElementById('edit-nota1').value),
+        nota_segundo_semestre: parseFloat(document.getElementById('edit-nota2').value)
+      };
+
+      await atualizarAluno(alunoEditandoId, dadosAtualizados);
+      fecharModal();
+      carregarLista();
+    });
+
+    carregarLista();
+  </script>
+</body>
+</html>

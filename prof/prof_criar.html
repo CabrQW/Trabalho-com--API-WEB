@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Professor(a)</title>
+  <link rel="stylesheet" href="prof.css">
+</head>
+<body>
+  <header>
+    <a href="../inicio/index.html" class="voltar">Voltar</a>
+    <div class="menu-header-prof">
+      <span class="ativo">CRIAR PROFESSOR(A)</span>
+      <a href="prof_listar.html">LISTAR PROFESSOR(A)</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-box-prof">
+      <h2>Criar Professor(a)</h2>
+      <p><strong>Insira seus dados:</strong></p>
+
+      <form>
+        <input type="text" placeholder="Digite seu nome:">
+        <input type="date" placeholder="Data de Nascimento:">
+        <input type="text" placeholder="Matéria:">
+        <input type="text" placeholder="Observação:">
+        <button type="submit">Criar</button>
+      </form>
+    </div>
+  </main>
+  <script src="professor.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const form = document.querySelector('form');
+      const inputs = form.querySelectorAll('input');
+  
+      if (id) {
+        const professor = await obterProfessor(id);
+        inputs[0].value = professor.nome;
+        inputs[1].value = professor.data_nascimento; // caso queira incluir
+        inputs[2].value = professor.materia;
+        inputs[3].value = professor.observacoes;
+  
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const dados = {
+            nome: inputs[0].value,
+            materia: inputs[2].value,
+            observacoes: inputs[3].value,
+            idade: calcularIdade(inputs[1].value)
+          };
+          await atualizarProfessor(id, dados);
+          alert('Professor atualizado com sucesso!');
+          window.location.href = 'prof_listar.html';
+        });
+      } else {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const dados = {
+            nome: inputs[0].value,
+            materia: inputs[2].value,
+            observacoes: inputs[3].value,
+            idade: calcularIdade(inputs[1].value)
+          };
+          await criarProfessor(dados);
+          alert('Professor criado com sucesso!');
+          window.location.href = 'prof_listar.html';
+        });
+      }
+    });
+  
+    function calcularIdade(dataNascimento) {
+      const hoje = new Date();
+      const nasc = new Date(dataNascimento);
+      let idade = hoje.getFullYear() - nasc.getFullYear();
+      const m = hoje.getMonth() - nasc.getMonth();
+      if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) {
+        idade--;
+      }
+      return idade;
+    }
+  </script>
+</body>
+</html>

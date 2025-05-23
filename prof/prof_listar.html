@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Professor(a)</title>
+  <link rel="stylesheet" href="prof.css">
+</head>
+<body>
+  <header>
+    <a href="/inicio/index.html" class="voltar">Voltar</a>
+    <div class="menu-header-prof">
+      <a href="prof_criar.html">CRIAR PROFESSOR(A)</a>
+      <span class="ativo">LISTAR PROFESSOR(A)</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="lista-box-prof">
+      <h2>Listagem dos Professores:</h2>
+      <ul id="lista-professores"></ul>
+    </div>
+  </main>
+
+  <!-- Modal de edição -->
+  <div id="modal-editar" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="fecharModal()">&times;</span>
+      <h3>Editar Professor</h3>
+      <form id="form-editar">
+        <input type="text" id="edit-nome" placeholder="Nome"><br>
+        <input type="text" id="edit-materia" placeholder="Matéria"><br>
+        <input type="text" id="edit-observacoes" placeholder="Observações"><br>
+        <input type="number" id="edit-idade" placeholder="Idade"><br>
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="professor.js"></script>
+  <script>
+    let professorEditandoId = null;
+
+    async function carregarProfessores() {
+      const lista = document.getElementById('lista-professores');
+      lista.innerHTML = '';
+      const professores = await listarProfessores();
+
+      professores.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${p.nome} 
+          <div class="butao3">
+          <button class="editar" onclick="abrirModal(${p.id})">Editar</button>
+          <button class="deletar" onclick="deletarProfessorHandler(${p.id})">Deletar</button>
+          </div>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    async function abrirModal(id) {
+      professorEditandoId = id;
+      const prof = await obterProfessor(id);
+      document.getElementById('edit-nome').value = prof.nome;
+      document.getElementById('edit-materia').value = prof.materia;
+      document.getElementById('edit-observacoes').value = prof.observacoes;
+      document.getElementById('edit-idade').value = prof.idade;
+
+      document.getElementById('modal-editar').classList.remove('hidden');
+    }
+
+    function fecharModal() {
+      document.getElementById('modal-editar').classList.add('hidden');
+    }
+
+    async function deletarProfessorHandler(id) {
+      if (confirm('Deseja deletar este professor?')) {
+        await deletarProfessor(id);
+        carregarProfessores();
+      }
+    }
+
+    document.getElementById('form-editar').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const dadosAtualizados = {
+        nome: document.getElementById('edit-nome').value,
+        materia: document.getElementById('edit-materia').value,
+        observacoes: document.getElementById('edit-observacoes').value,
+        idade: parseInt(document.getElementById('edit-idade').value)
+      };
+
+      await atualizarProfessor(professorEditandoId, dadosAtualizados);
+      fecharModal();
+      carregarProfessores();
+    });
+
+    carregarProfessores();
+  </script>
+</body>
+</html>

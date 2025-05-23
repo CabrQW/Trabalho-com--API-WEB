@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Aluno(a)</title>
+  <link rel="stylesheet" href="aluno.css">
+</head>
+<body>
+  <header>
+    <a href="../inicio/index.html" class="voltar">Voltar</a>
+    <div class="menu-header">
+      <span class="ativo">CRIAR ALUNO(A)</span>
+      <a href="aluno_listar.html">LISTAR ALUNO(A)</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-box">
+      <h2>Cadastrar Aluno(a)</h2>
+      <p><strong>Insira seus dados:</strong></p>
+
+      <form>
+        <input type="text" placeholder="Digite seu nome:">
+        <input type="date" placeholder="Data de Nascimento:">
+        <input type="text" placeholder="Turma:">
+        <input type="number" placeholder="Nota do Primeiro Semestre:">
+        <input type="number" placeholder="Nota do segundo semestre:">
+        <button type="submit">Criar</button>
+      </form>
+    </div>
+  </main>
+  <script src="aluno.js"></script>
+<script>
+  document.querySelector('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const inputs = e.target.elements;
+    const dados = {
+      nome: inputs[0].value,
+      data_nascimento: inputs[1].value,
+      turma_id: parseInt(inputs[2].value),
+      nota_primeiro_semestre: parseFloat(inputs[3].value),
+      nota_segundo_semestre: parseFloat(inputs[4].value)
+    };
+
+    await criarAluno(dados);
+    alert('Aluno criado com sucesso!');
+    window.location.href = "aluno_listar.html";
+  });
+</script>
+</body>
+</html>

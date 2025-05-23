@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Turma</title>
+  <link rel="stylesheet" href="turma.css">
+</head>
+<body>
+  <header>
+    <a href="../inicio/index.html" class="voltar">Voltar</a>
+    <div class="menu-header-turma">
+      <span class="ativo">CRIAR TURMA</span>
+      <a href="turma_listar.html">LISTAR TURMA</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-box-turma">
+      <h2>Criar Turma</h2>
+      <p><strong>Insira as informações da turma:</strong></p>
+
+      <form>
+        <input type="text" placeholder="Nome:">
+        <input type="text" placeholder="Matéria:">
+        <select id="seleto">
+          <option value="1">Sim</option>
+          <option value="0">Não</option>
+        </select>
+        <input type="text" placeholder="Professor:">
+        <button type="submit">Criar</button>
+      </form>
+    </div>
+  </main>
+</body>
+
+<script src="turma.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const form = document.querySelector('form');
+    const nomeInput = form.querySelector('input[placeholder="Nome:"]');
+    const materiaInput = form.querySelector('input[placeholder="Matéria:"]');
+    const ativoSelect = form.querySelector('select');
+    const professorInput = form.querySelector('input[placeholder="Professor:"]');
+
+
+    if (id) {
+  const turma = await obterTurma(id);
+  nomeInput.value = turma.nome;
+  materiaInput.value = turma.materia;
+  ativoSelect.value = turma.ativo.toString();
+  professorInput.value = turma.professor_id;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const dados = {
+      nome: nomeInput.value,
+      materia: materiaInput.value,
+      descricao: 0,
+      ativo: parseInt(ativoSelect.value),
+      professor_id: parseInt(professorInput.value)
+    };
+    await atualizarTurma(id, dados);
+    alert('Turma atualizada com sucesso!');
+    window.location.href = 'turma_listar.html';
+  });
+} else {
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const dados = {
+      nome: nomeInput.value,
+      materia: materiaInput.value,
+      descricao: 0,
+      ativo: parseInt(ativoSelect.value),
+      professor_id: parseInt(professorInput.value)
+    };
+    await criarTurma(dados);
+    alert('Turma criada com sucesso!');
+    window.location.href = 'turma_listar.html';
+  });
+}
+
+});
+</script>
+
+</html>
