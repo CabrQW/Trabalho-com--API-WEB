@@ -1,6 +1,6 @@
 const API_PROFESSORES = 'https://school-system-spi.onrender.com/api/professores';
 
-// 🔹 Criar Professor
+// Criar Professor
 async function criarProfessor(dados) {
   const response = await fetch(API_PROFESSORES, {
     method: 'POST',
@@ -10,19 +10,19 @@ async function criarProfessor(dados) {
   return response.json();
 }
 
-// 🔹 Listar todos os professores
+// Listar todos os professores
 async function listarProfessores() {
   const response = await fetch(API_PROFESSORES);
   return response.json();
 }
 
-// 🔹 Obter professor por ID
+// Obter professor por ID
 async function obterProfessor(id) {
   const response = await fetch(`${API_PROFESSORES}/${id}`);
   return response.json();
 }
 
-// 🔹 Atualizar professor por ID
+// Atualizar 
 async function atualizarProfessor(id, dados) {
   const response = await fetch(`${API_PROFESSORES}/${id}`, {
     method: 'PUT',
@@ -32,7 +32,7 @@ async function atualizarProfessor(id, dados) {
   return response.json();
 }
 
-// 🔹 Deletar professor por ID
+// Deletar 
 async function deletarProfessor(id) {
   await fetch(`${API_PROFESSORES}/${id}`, {
     method: 'DELETE'

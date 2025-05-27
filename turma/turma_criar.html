@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <a href="../inicio/index.html" class="voltar">Voltar</a>
+    <a href="/index.html" class="voltar">Voltar</a>
     <div class="menu-header-turma">
       <span class="ativo">CRIAR TURMA</span>
       <a href="turma_listar.html">LISTAR TURMA</a>
@@ -66,22 +66,7 @@
     alert('Turma atualizada com sucesso!');
     window.location.href = 'turma_listar.html';
   });
-} else {
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const dados = {
-      nome: nomeInput.value,
-      materia: materiaInput.value,
-      descricao: 0,
-      ativo: parseInt(ativoSelect.value),
-      professor_id: parseInt(professorInput.value)
-    };
-    await criarTurma(dados);
-    alert('Turma criada com sucesso!');
-    window.location.href = 'turma_listar.html';
-  });
 }
-
 });
 </script>
 

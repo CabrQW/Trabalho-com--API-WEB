@@ -1,6 +1,6 @@
 const API_ALUNOS = 'https://school-system-spi.onrender.com/api/alunos';
 
-// 🔸 Criar Aluno
+// Criar Aluno
 async function criarAluno(dados) {
   const response = await fetch(API_ALUNOS, {
     method: 'POST',
@@ -10,19 +10,19 @@ async function criarAluno(dados) {
   return response.json();
 }
 
-// 🔸 Listar todos os alunos
+// Listar todos os alunos
 async function listarAlunos() {
   const response = await fetch(API_ALUNOS);
   return response.json();
 }
 
-// 🔸 Obter aluno por ID
+// Obter aluno por ID
 async function obterAluno(id) {
   const response = await fetch(`${API_ALUNOS}/${id}`);
   return response.json();
 }
 
-// 🔸 Atualizar aluno por ID
+// Atualizar 
 async function atualizarAluno(id, dados) {
   const response = await fetch(`${API_ALUNOS}/${id}`, {
     method: 'PUT',
@@ -32,7 +32,7 @@ async function atualizarAluno(id, dados) {
   return response.json();
 }
 
-// 🔸 Deletar aluno por ID
+// Deletar 
 async function deletarAluno(id) {
   await fetch(`${API_ALUNOS}/${id}`, {
     method: 'DELETE'

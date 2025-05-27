@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-    <a href="/inicio/index.html" class="voltar">Voltar</a>
+    <a href="/index.html" class="voltar">Voltar</a>
     <div class="menu-header">
       <a href="aluno_criar.html">CRIAR ALUNO(A)</a>
       <span class="ativo">LISTAR ALUNO(A)</span>
@@ -69,7 +69,8 @@
 
     async function abrirModal(id) {
       alunoEditandoId = id;
-      const aluno = await obterAluno(id);
+      const respota = await obterAluno(id);
+      const aluno = respota.aluno;
 
       document.getElementById('edit-nome').value = aluno.nome;
       document.getElementById('edit-nascimento').value = aluno.data_nascimento;
