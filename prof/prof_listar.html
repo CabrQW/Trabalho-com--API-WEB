@@ -49,7 +49,7 @@
       professores.forEach(p => {
         const li = document.createElement('li');
         li.innerHTML = `
-          ${p.nome} 
+          ${p.nome} - ID:${p.id}
           <div class="butao3">
           <button class="editar" onclick="abrirModal(${p.id})">Editar</button>
           <button class="deletar" onclick="deletarProfessorHandler(${p.id})">Deletar</button>

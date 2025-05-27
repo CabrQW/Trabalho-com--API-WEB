@@ -21,13 +21,15 @@
       <p><strong>Insira as informações da turma:</strong></p>
 
       <form>
-        <input type="text" placeholder="Nome:">
         <input type="text" placeholder="Matéria:">
-        <select id="seleto">
-          <option value="1">Sim</option>
-          <option value="0">Não</option>
-        </select>
+        <label for="">Ativo:
+          <select id="seleto">
+            <option value="1">Sim</option>
+            <option value="0">Não</option>
+          </select>
+        </label>
         <input type="text" placeholder="Professor:">
+        <input type="text" placeholder="Descrição:">
         <button type="submit">Criar</button>
       </form>
     </div>
@@ -35,39 +37,52 @@
 </body>
 
 <script src="turma.js"></script>
-<script>
+  <script>
   window.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const form = document.querySelector('form');
-    const nomeInput = form.querySelector('input[placeholder="Nome:"]');
     const materiaInput = form.querySelector('input[placeholder="Matéria:"]');
     const ativoSelect = form.querySelector('select');
     const professorInput = form.querySelector('input[placeholder="Professor:"]');
+    const descricaoInput = form.querySelector('input[placeholder="Descrição:"]');
 
-
+    // Se houver ID: edição
     if (id) {
-  const turma = await obterTurma(id);
-  nomeInput.value = turma.nome;
-  materiaInput.value = turma.materia;
-  ativoSelect.value = turma.ativo.toString();
-  professorInput.value = turma.professor_id;
+      const turma = await obterTurma(id);
+      materiaInput.value = turma.materia;
+      ativoSelect.value = turma.ativo.toString();
+      professorInput.value = turma.professor_id;
 
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const dados = {
-      nome: nomeInput.value,
-      materia: materiaInput.value,
-      descricao: 0,
-      ativo: parseInt(ativoSelect.value),
-      professor_id: parseInt(professorInput.value)
-    };
-    await atualizarTurma(id, dados);
-    alert('Turma atualizada com sucesso!');
-    window.location.href = 'turma_listar.html';
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const dados = {
+          materia: materiaInput.value,
+          descricao: descricaoInput.value,
+          ativo: parseInt(ativoSelect.value),
+          professor_id: parseInt(professorInput.value)
+        };
+        await atualizarTurma(id, dados);
+        alert('Turma atualizada com sucesso!');
+        window.location.href = 'turma_listar.html';
+      });
+    } else {
+      // Criação de nova turma
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const dados = {
+          nome: nomeInput.value,
+          materia: materiaInput.value,
+          descricao: "Turma criada via formulário",
+          ativo: parseInt(ativoSelect.value),
+          professor_id: parseInt(professorInput.value)
+        };
+        await criarTurma(dados);
+        alert('Turma criada com sucesso!');
+        window.location.href = 'turma_listar.html';
+      });
+    }
   });
-}
-});
 </script>
 
 </html>
