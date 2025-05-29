@@ -21,7 +21,7 @@
       <ul id="lista-turmas"></ul>
     </div>
   </main>
-
+ 
   <!-- Modal -->
   <div id="modal-editar" class="modal hidden">
     <div class="modal-content">
@@ -34,8 +34,8 @@
           <select id="edit-ativo">
             <option value="1">Sim</option>
             <option value="0">Não</option>
-        </select>
-        </label>
+          </select>
+        </label><br>
         <input type="number" id="edit-professor" placeholder="ID do Professor"><br>
         <button type="submit">Salvar</button>
       </form>
@@ -43,67 +43,5 @@
   </div>
 
   <script src="turma.js"></script>
-  <script>
-    let turmaEditandoId = null;
-
-    async function carregarTurmas() {
-      const turmas = await listarTurmas();
-      const lista = document.getElementById('lista-turmas');
-      lista.innerHTML = '';
-
-      turmas.forEach(turma => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-           ${turma.materia} - Ativo: ${turma.ativo ? 'Sim' : 'Não'}
-          <div class="butao2">
-          <button class="editar" onclick="abrirModal(${turma.id})">Editar</button>
-          <button class="deletar" onclick="removerTurma(${turma.id})">Deletar</button>
-          </div>
-        `;
-        lista.appendChild(li);
-      });
-    }
-
-    async function abrirModal(id) {
-      turmaEditandoId = id;
-      const turma1 = await obterTurma(id);
-      const turma = turma1.turma; 
-
-      document.getElementById('edit-materia').value = turma.materia;
-      document.getElementById('edit-descricao').value = turma.descricao;
-      document.getElementById('edit-ativo').value = turma.ativo;
-      document.getElementById('edit-professor').value = turma.professor_id;
-
-      document.getElementById('modal-editar').classList.remove('hidden');
-    }
-
-    function fecharModal() {
-      document.getElementById('modal-editar').classList.add('hidden');
-    }
-
-    async function removerTurma(id) {
-      if (confirm("Deseja realmente excluir esta turma?")) {
-        await deletarTurma(id);
-        carregarTurmas();
-      }
-    }
-
-    document.getElementById('form-editar').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const dadosAtualizados = {
-        materia: document.getElementById('edit-materia').value,
-        descricao: document.getElementById('edit-descricao').value,
-        ativo: parseInt(document.getElementById('edit-ativo').value),
-        professor_id: parseInt(document.getElementById('edit-professor').value),
-      };
-
-      await atualizarTurma(turmaEditandoId, dadosAtualizados);
-      fecharModal();
-      carregarTurmas();
-    });
-
-    carregarTurmas();
-  </script>
 </body>
 </html>

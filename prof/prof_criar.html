@@ -30,58 +30,5 @@
     </div>
   </main>
   <script src="professor.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', async () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
-      const form = document.querySelector('form');
-      const inputs = form.querySelectorAll('input');
-  
-      if (id) {
-        const professor = await obterProfessor(id);
-        inputs[0].value = professor.nome;
-        inputs[1].value = professor.data_nascimento; // caso queira incluir
-        inputs[2].value = professor.materia;
-        inputs[3].value = professor.observacoes;
-  
-        form.addEventListener('submit', async function (e) {
-          e.preventDefault();
-          const dados = {
-            nome: inputs[0].value,
-            materia: inputs[2].value,
-            observacoes: inputs[3].value,
-            idade: calcularIdade(inputs[1].value)
-          };
-          await atualizarProfessor(id, dados);
-          alert('Professor atualizado com sucesso!');
-          window.location.href = 'prof_listar.html';
-        });
-      } else {
-        form.addEventListener('submit', async function (e) {
-          e.preventDefault();
-          const dados = {
-            nome: inputs[0].value,
-            materia: inputs[2].value,
-            observacoes: inputs[3].value,
-            idade: calcularIdade(inputs[1].value)
-          };
-          await criarProfessor(dados);
-          alert('Professor criado com sucesso!');
-          window.location.href = 'prof_listar.html';
-        });
-      }
-    });
-  
-    function calcularIdade(dataNascimento) {
-      const hoje = new Date();
-      const nasc = new Date(dataNascimento);
-      let idade = hoje.getFullYear() - nasc.getFullYear();
-      const m = hoje.getMonth() - nasc.getMonth();
-      if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) {
-        idade--;
-      }
-      return idade;
-    }
-  </script>
 </body>
 </html>
