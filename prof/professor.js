@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (id) {
     const professor = await obterProfessor(id);
     inputs[0].value = professor.nome;
-    inputs[1].value = professor.data_nascimento; // caso queira incluir
+    inputs[1].value = professor.data_nascimento;
     inputs[2].value = professor.materia;
     inputs[3].value = professor.observacoes;
 

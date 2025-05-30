@@ -140,7 +140,7 @@ async function carregarTurmas() {
 async function abrirModal(id) {
   turmaEditandoId = id;
   const turma1 = await obterTurma(id);
-  const turma = turma1.turma || turma1; // compatibilidade
+  const turma = turma1.turma || turma1;
 
   document.getElementById('edit-materia').value = turma.materia;
   document.getElementById('edit-descricao').value = turma.descricao;

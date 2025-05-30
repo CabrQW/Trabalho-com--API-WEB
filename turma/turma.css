@@ -204,6 +204,16 @@ main {
 
 }
 
+.ativo01{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
 .modal-content button {
   width: 100%;
   padding: 12px;
