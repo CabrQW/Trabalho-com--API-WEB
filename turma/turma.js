@@ -124,8 +124,9 @@ async function carregarTurmas() {
     }
 
     li.innerHTML = `
-      Matéria: ${turma.materia} - Ativo: ${turma.ativo ? 'Sim' : 'Não'}<br>
-      Professor: ${nomeProfessor}<br/>
+      Matéria: ${turma.materia} - ID: ${turma.id}<br>
+      Ativo: ${turma.ativo ? 'Sim' : 'Não'}<br>
+      Professor: ${nomeProfessor}<br>
       Descrição: ${turma.descricao}
       <div class="butao2">
         <button class="editar" onclick="abrirModal(${turma.id})">Editar</button>
