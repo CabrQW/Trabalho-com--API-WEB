@@ -1,5 +1,88 @@
 const API_PROFESSORES = 'https://school-system-spi.onrender.com/api/professores';
 
+const API_KEY = "e4727ef041294b8393a20818250606"; 
+
+// Obtém o clima de uma cidade informada
+async function obterClima(cidade) {
+  const API_TEMPO = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cidade}&aqi=no`;
+
+  try {
+    const response = await fetch(API_TEMPO);
+    if (!response.ok) throw new Error("Cidade não encontrada");
+    const dados = await response.json();
+    return dados.current;
+  } catch (error) {
+    console.error("Erro ao buscar o clima:", error);
+    return null;
+  }
+}
+
+// Exibe o clima na tela
+async function exibirClima(cidade) {
+  const clima = await obterClima(cidade);
+  const divClima = document.getElementById("clima");
+
+  if (clima) {
+    divClima.innerHTML = `
+      <h3>Clima Atual em ${cidade}:</h3>
+      <p>🌡️ Temperatura: <strong>${clima.temp_c}°C</strong></p>
+      <p>💨 Vento: ${clima.wind_kph} km/h</p>
+      <p>🌥️ Condição: ${clima.condition.text}</p>
+    `;
+  } else {
+    divClima.innerHTML = `<p>❌ Não foi possível obter o clima para "${cidade}".</p>`;
+  }
+}
+
+// Evento ao clicar no botão
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("buscar-btn");
+
+  btn.addEventListener("click", () => {
+    const cidade = document.getElementById("cidade-input").value.trim();
+    if (cidade) {
+      exibirClima(cidade);
+    } else {
+      alert("Digite o nome de uma cidade.");
+    }
+  });
+
+  // Opcional: mostrar clima de uma cidade padrão ao carregar
+  exibirClima("Santos");
+});
+
+// Seu código original para manipular professores abaixo (omitido para não duplicar)
+
+// Exemplo de função listar professores
+async function listarProfessores() {
+  const response = await fetch(API_PROFESSORES);
+  const professores = await response.json();
+  const lista = document.getElementById('lista-professores');
+  lista.innerHTML = '';
+
+  professores.forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      Nome: ${p.nome} - ID:${p.id}<br>
+      Matéria: ${p.materia}<br>
+      idade: ${p.idade}<br>
+      Observações: ${p.observacoes}
+      <div class="butao3">
+        <button class="editar" onclick="abrirModal(${p.id})">Editar</button>
+        <button class="deletar" onclick="deletarProfessorHandler(${p.id})">Deletar</button>
+      </div>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+// Chame as funções principais quando a página carregar
+document.addEventListener("DOMContentLoaded", () => {
+  listarProfessores();
+  exibirClima();
+});
+
+
 // Criar Professor
 async function criarProfessor(dados) {
   const response = await fetch(API_PROFESSORES, {
